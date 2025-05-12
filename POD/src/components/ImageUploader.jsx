@@ -34,7 +34,9 @@ const ImageUploader = ({ onImageSelect, theme }) => {
         <>
           <div className="text-5xl mb-2">🖼️</div>
           <p className="text-gray-600">Drop an image here or</p>
-          <label className={`mt-2 cursor-pointer inline-block ${theme.btn} text-black border px-4 py-2 rounded shadow-sm hover:bg-gray-50`}>
+          <label
+            className={`px-6 py-2 rounded-md transition-all duration-300 ${theme.btn} transform hover:scale-105 `}
+          >
             Select File
             <input
               type="file"
@@ -47,21 +49,17 @@ const ImageUploader = ({ onImageSelect, theme }) => {
         </>
       ) : (
         <div
-          className=""
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
+          className="h-60 w-full overflow-hidden object-contain border-2 border-black"
         >
-          {!hover ? (
-            <img
-              src={preview}
-              alt="Preview"
-              className="max-w-full h-auto object-contain rounded"
-            />
-          ) : (
-            <div className="text-center p-4 border border-dashed border-gray-300 rounded">
+          {hover ? (
+            <div className="w-full md:w-4/5 lg:w-full xl:w-4/5 mx-auto">
               <div className="text-5xl mb-2">🖼️</div>
-              <p className="text-gray-600">Drop an image here or</p>
-              <label className="mt-2 cursor-pointer inline-block bg-white border px-4 py-2 rounded shadow-sm hover:bg-gray-50">
+              <p className="text-gray-600 mb-2">Drop an image here or</p>
+              <label
+                className={`px-6 py-2 rounded-md transition-all duration-300 ${theme.btn} transform hover:scale-105 `}
+              >
                 Select File
                 <input
                   type="file"
@@ -72,6 +70,12 @@ const ImageUploader = ({ onImageSelect, theme }) => {
               </label>
               <p className="text-xs text-gray-500 mt-2">10 MB maximum</p>
             </div>
+          ) : (
+            <img
+              src={preview}
+              alt="Preview"
+              className="mx-auto max-w-full h-full object-contain rounded"
+            />
           )}
         </div>
       )}

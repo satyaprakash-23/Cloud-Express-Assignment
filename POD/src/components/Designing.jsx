@@ -1,7 +1,8 @@
-import ImageUploader from "./ImageUploader";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import ImageUploader from "./ImageUploader";
 
+// Theme definitions
 const themes = [
   {
     bg: "bg-gray-100",
@@ -26,7 +27,6 @@ const themes = [
 const Designing = () => {
   const [themeVersion, setThemeVersion] = useState(0);
   const theme = themes[themeVersion];
-  console.log(theme);
 
   const {
     register,
@@ -45,8 +45,6 @@ const Designing = () => {
   };
 
   const handleKeyDown = (e) => {
-    console.log(e);
-
     if (e.altKey && e.key === "q") {
       setThemeVersion((prev) => (prev + 1) % themes.length);
     }
@@ -61,16 +59,17 @@ const Designing = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={`min-h-screen p-6 ${theme.bg}`}>
-        <p className="absolute top-0 left-0 text-center opacity-50">
+      <div className={`min-h-screen p-4 md:p-6 ${theme.bg} transition-colors duration-300`}>
+        <p className="absolute top-2 left-2 text-xs sm:text-sm opacity-50">
           Press Alt+q to change style
         </p>
-        <div
-          className={`max-w-6xl mx-auto rounded-xl shadow-md p-6 ${theme.card}`}
-        >
+        
+        <div className={`max-w-6xl mx-auto rounded-xl shadow-md p-4 md:p-6 ${theme.card} transition-colors duration-300`}>
+          
           {/* Top: Image + Form Section */}
-          <div className="flex flex-col sm:flex-row gap-6 h-[60vh]">
-            <div className="w-full sm:w-[28%] bg-gray-200 border border-dashed border-gray-400 rounded flex items-center justify-center">
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
+            {/* Image Preview */}
+            <div className="w-full lg:w-1/3 aspect-square sm:aspect-auto sm:h-64 md:h-80 lg:h-auto bg-gray-200 border border-dashed border-gray-400 rounded-lg flex items-center justify-center overflow-hidden">
               {selectedImage ? (
                 <img
                   className="max-h-full max-w-full object-contain"
@@ -78,50 +77,51 @@ const Designing = () => {
                   alt="preview"
                 />
               ) : (
-                <span className="text-gray-500">Image Preview</span>
+                <span className="text-gray-500 text-sm md:text-base">Image Preview</span>
               )}
             </div>
 
-            <div className={`w-full sm:w-[72%] rounded p-4 ${theme.card}`}>
-              <div className="h-2/4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Form Controls */}
+            <div className={`w-full lg:w-2/3 rounded-lg p-4 ${theme.card} transition-colors duration-300`}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium">
+                  <label className="block text-sm font-medium mb-1">
                     Height (cm)
                   </label>
                   <input
                     type="number"
                     defaultValue={180}
-                    className={`w-full mt-1 p-2 border rounded ${theme.input}`}
+                    className={`w-full p-2 border rounded-md ${theme.input} transition-colors duration-300`}
                     {...register("height", {
                       required: true,
                       pattern: /^[0-9]+$/,
                     })}
                   />
                   {errors?.height?.type === "pattern" && (
-                    <p className="text-red-600">Integers Only</p>
+                    <p className="text-red-600 text-xs mt-1">Integers Only</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium">
+                  <label className="block text-sm font-medium mb-1">
                     Weight (kg)
                   </label>
                   <input
                     type="number"
                     defaultValue={80}
-                    className={`w-full mt-1 p-2 border rounded ${theme.input}`}
+                    className={`w-full p-2 border rounded-md ${theme.input} transition-colors duration-300`}
                     {...register("weight", {
                       required: true,
                       pattern: /^[0-9]+$/,
                     })}
                   />
                   {errors?.weight?.type === "pattern" && (
-                    <p className="text-red-600">Integers Only</p>
+                    <p className="text-red-600 text-xs mt-1">Integers Only</p>
                   )}
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-sm font-medium">Build</label>
+                  <label className="block text-sm font-medium mb-1">Build</label>
                   <select
-                    className={`w-full mt-1 p-2 border rounded ${theme.input}`}
+                    className={`w-full p-2 border rounded-md ${theme.input} transition-colors duration-300`}
                     {...register("build", { required: true })}
                     defaultValue="athletic"
                   >
@@ -132,7 +132,8 @@ const Designing = () => {
                   </select>
                 </div>
               </div>
-              <div className="h-1/2 w-3/4 m-auto overflow-hidden">
+              
+              <div className="w-full md:w-4/5 lg:w-full xl:w-4/5 mx-auto">
                 <ImageUploader
                   onImageSelect={handleImageSelect}
                   theme={theme}
@@ -142,24 +143,27 @@ const Designing = () => {
           </div>
 
           {/* Bottom: Text Input Section */}
-          <div className={`rounded p-4 mt-6 ${theme.card}`}>
+          <div className={`rounded-lg p-4 mt-6 ${theme.card} transition-colors duration-300 w-full`}>
             <label className="block text-sm font-medium mb-2">
               T-Shirt Text (max 3 lines)
             </label>
-            <textarea
-              {...register("description", { required: true })}
-              rows="3"
-              maxLength={300}
-              className={`w-full resize-none p-3 border rounded ${theme.input}`}
-              placeholder="Enter up to 3 lines of text..."
-            />
+            <div className="relative w-full h-32">
+              <textarea
+                {...register("description", { required: true })}
+                maxLength={300}
+                className={`w-full h-full resize-none p-3 border rounded-md ${theme.input} transition-colors duration-300`}
+                placeholder="Enter up to 3 lines of text..."
+              />
+            </div>
           </div>
 
-          <div className="flex justify-center">
-            <input
+          <div className="flex justify-center mt-6">
+            <button
               type="submit"
-              className={`mt-4 px-6 py-2 rounded transition-colors ${theme.btn}`}
-            />
+              className={`px-6 py-2 rounded-md transition-all duration-300 ${theme.btn} transform hover:scale-105`}
+            >
+              Preview Design
+            </button>
           </div>
         </div>
       </div>
